@@ -7,7 +7,6 @@ var treePos = {x: 200, y: 50};
 var rightSidebarSize = {w: 250, h: gameSize.h};
 
 var defaultTextPadding = 10;
-
 var smokeyPosition = {x: 0, y: 0};
 var smokeyVisible = false;
 var birdSize = {w: 103, h: 103};
@@ -50,6 +49,7 @@ function preload () {
   game.load.image('bird1', 'assets/bird1_160x160.png');
   game.load.image('bird2', 'assets/bird2_160x160.png');
   game.load.image('bg', 'assets/bg.png');
+  game.load.image('smokey', 'assets/smokey_64x64.png');
 
   // Load notes.
   for (var i=0; i < noteIds.length; i++) {
@@ -58,8 +58,6 @@ function preload () {
   }
   game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
-
-
 }
 
 function create () {
@@ -100,23 +98,25 @@ function create () {
   graphics.endFill();
   
   // Outer Smokey box
-  graphics = game.add.graphics(0, 0);
+  graphics = game.add.graphics(smokeyPosition.x, smokeyPosition.y);
   graphics.beginFill(0xFFCA22);
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 150, 200);
   graphics.endFill();
   // Inner Smokey box
-  graphics = game.add.graphics(5, 5);
+  graphics = game.add.graphics(smokeyPosition.x+5, smokeyPosition.y+5);
   graphics.beginFill(0xC5850A);
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 140, 190);
   graphics.endFill();
   // Smokey outline - outer
-  graphics = game.add.graphics(0, 0);
+  graphics = game.add.graphics(smokeyPosition.x, smokeyPosition.y);
   graphics.beginFill(0xFFCA22);
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 69, 69);
   graphics.endFill();
+  // Smokey
+  var smokey = game.add.sprite(smokeyPosition.x+2, smokeyPosition.y, 'smokey');
   
   currentLevelIdx = 0;
   gameState = 'levelStart';
