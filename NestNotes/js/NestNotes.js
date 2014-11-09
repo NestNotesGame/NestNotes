@@ -15,7 +15,16 @@ var birdRightPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: bird
 
 var songWaitDelay = 1.5;
 
+var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
+
+var birdData = [
+  {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
+  {id: 'M2', notes: ['C', 'D'], label: 'Purple-footed\n Tang drinker'},
+]
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'contentBox', { preload: preload, create: create, update: update});
+
+var birdButtons = [];
 
 function preload () {
   game.load.image('tree', 'assets/tree_450x450.png');
@@ -25,11 +34,18 @@ function preload () {
   game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
 
-  game.load.audio('sfx', 'assets/A.mp3');
+  // Load notes.
+  for (var i=0; i < noteIds.length; i++) {
+    var noteId = noteIds[i];
+    game.load.audio(noteId, 'assets/' + noteId + '.mp3');
+  }
 
 }
 
 function create () {
+
+  var activeBirdIds = ['unison'];
+
   var tree = game.add.sprite(treePos.x, treePos.y, 'tree');
   tree.scale.setTo(.67, .67);
   
@@ -45,18 +61,26 @@ function create () {
   graphics.drawRect(gameSize.w - rightSidebarSize.w, 0, rightSidebarSize.w, rightSidebarSize.h);
 
   // Draw initial sidebar buttons.
-  makeBirdButton({y: 15, birdId: 0, text: 'Ruby-Throated\nSap-Sucker\n(Interval: Unison)'});
-
   gameState = 'birdStart';
 }
 
 function update (){
   if (gameState == 'birdStart') {
+    updateSidebar();
     console.log('show bird');
     console.log('play bird song');
     currentBirdId = 0;
     gameState = 'awaitingInput';
   }
+}
+
+var updateSidebar = function() {
+  for (var i=0; i < birdButtons.length; i++) {
+    birdButtons[i].destroy();
+  }
+  birdButtons = [];
+  birdButtons.push(makeBirdButton(
+    {y: 15, birdId: 0, text: 'Ruby-Throated\nSap-Sucker\n(Interval: Unison)'}));
 }
 
 
