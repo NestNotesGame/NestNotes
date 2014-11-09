@@ -13,6 +13,7 @@ var birdSize = {w: 103, h: 103};
 var birdY = treePos.y + treeSize.h * .25;
 var birdLeftPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
 var birdRightPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
+var correctBirdCount = 0;
 
 var smokey;
 var smokeySize = {w: 150, h: 250};
@@ -23,17 +24,25 @@ var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
 
 var birdData = {
   'unison': {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
-  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Peruvian\n Tang drinker'},
+  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Peruvian\n Tang Licker'},
 }
 
 var levels = [
   {
     id: 0,
-    numTests: 1,
-    smokyMessage: "Welcome aboard, rookie!\n" +
+    numTests: 2,
+    smokeyMessage: "Welcome aboard, rookie!\n" +
       "Your first assignment is to identify the Ruby-Throated garlic sucker.\n" + 
       "It sings a unison interval.",
     activeBirdIds: ['unison']
+  },
+  {
+    id: 0,
+    numTests: 5,
+    smokeyMessage: "Now get ready for a challenge.\n" +
+      "A flock of Peruvian Tang Lickers has been spotted nearby.\n" + 
+      "They sing in major seconds.",
+    activeBirdIds: ['unison', 'M2']
   }
 ];
 var currentLevelIdx;
@@ -129,11 +138,10 @@ function update (){
   if (gameState == 'levelStart') {
     currentLevel = levels[currentLevelIdx];
     updateSidebar();
-    updateSmokey();
+    updateSmokey({text: currentLevel.smokeyMessage});
     gameState = 'birdStart';
   }
   else if (gameState == 'birdStart') {
-  console.log("cl: ", currentLevel);
     currentBirdId = currentLevel.activeBirdIds[0];
     showBirdById(currentBirdId, {
       callback: function(){ 
@@ -144,13 +152,13 @@ function update (){
   }
 }
 
-var updateSmokey = function() {
+var updateSmokey = function(opts) {
   if (smokeyText) {
     smokeyText.destroy();
   }
   var style = { font: "14px Arial", fill: "#333333", align: "left" };
   smokeyText = game.add.text(
-    smokeyPosition.x + defaultTextPadding, smokeyPosition.y + smokey.height + defaultTextPadding, currentLevel.smokyMessage, style);
+    smokeyPosition.x + defaultTextPadding, smokeyPosition.y + smokey.height + defaultTextPadding, opts.text, style);
   smokeyText.wordWrap = true;
   smokeyText.wordWrapWidth = smokeySize.w - (2*defaultTextPadding);
 };
@@ -179,8 +187,11 @@ var playSong = function(notes, opts) {
 
 var evaluateBirdButtonResponse = function(response) {
   if (response.birdId == currentBirdId) {
+    correctBirdCount++;
+    updateSmokey({text: 'Correct!'});
   } else {
     console.log('incorrect');
+    updateSmokey({text: 'Nope! Try again rookie...'});
   }
 }
 
@@ -205,7 +216,13 @@ function onBirdButtonDown(birdButton) {
     evaluateBirdButtonResponse({birdId: birdButton.birdId});
     hideBird({callback: function(){
       setTimeout(function() {
-        gameState = 'birdStart';
+        if (correctBirdCount >= currentLevel.numTests) {
+          currentLevelIdx += 1;
+          correctBirdCount = 0;
+          gameState = 'levelStart';
+        } else {
+          gameState = 'birdStart';
+        }
       }, 1000);
     }});
   }
