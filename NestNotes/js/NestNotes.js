@@ -14,6 +14,9 @@ var birdY = treePos.y + treeSize.h * .25;
 var birdLeftPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
 var birdRightPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
 
+var smokey;
+var smokeySize = {w: 150, h: 250};
+var smokeyText;
 var songWaitDelay = 1.5;
 
 var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
@@ -27,8 +30,8 @@ var levels = [
   {
     id: 0,
     numTests: 1,
-    smokyMessage: "Welcome aboard, rookie.\nGet ready for your first assignment." +
-      "Your first assignment is to identify the Ruby-Throated Biscuit Finch.\n" + 
+    smokyMessage: "Welcome aboard, rookie!\n" +
+      "Your first assignment is to identify the Ruby-Throated garlic sucker.\n" + 
       "It sings a unison interval.",
     activeBirdIds: ['unison']
   }
@@ -101,22 +104,22 @@ function create () {
   graphics = game.add.graphics(smokeyPosition.x, smokeyPosition.y);
   graphics.beginFill(0xFFCA22);
   graphics.lineStyle(1, 0xffffff, 0);
-  graphics.drawRect(0, 0, 150, 200);
+  graphics.drawRect(0, 0, smokeySize.w, smokeySize.h);
   graphics.endFill();
   // Inner Smokey box
   graphics = game.add.graphics(smokeyPosition.x+5, smokeyPosition.y+5);
   graphics.beginFill(0xC5850A);
   graphics.lineStyle(1, 0xffffff, 0);
-  graphics.drawRect(0, 0, 140, 190);
+  graphics.drawRect(0, 0, 140, smokeySize.h - 10);
   graphics.endFill();
   // Smokey outline - outer
   graphics = game.add.graphics(smokeyPosition.x, smokeyPosition.y);
-  graphics.beginFill(0xFFCA22);
+  graphics.beginFill(0x0000CC);
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 69, 69);
   graphics.endFill();
   // Smokey
-  var smokey = game.add.sprite(smokeyPosition.x+2, smokeyPosition.y, 'smokey');
+  smokey = game.add.sprite(smokeyPosition.x+2, smokeyPosition.y, 'smokey');
   
   currentLevelIdx = 0;
   gameState = 'levelStart';
@@ -142,6 +145,14 @@ function update (){
 }
 
 var updateSmokey = function() {
+  if (smokeyText) {
+    smokeyText.destroy();
+  }
+  var style = { font: "14px Arial", fill: "#333333", align: "left" };
+  smokeyText = game.add.text(
+    smokeyPosition.x + defaultTextPadding, smokeyPosition.y + smokey.height + defaultTextPadding, currentLevel.smokyMessage, style);
+  smokeyText.wordWrap = true;
+  smokeyText.wordWrapWidth = smokeySize.w - (2*defaultTextPadding);
 };
 
 var updateSidebar = function() {
