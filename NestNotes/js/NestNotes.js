@@ -69,7 +69,11 @@ function update (){
   if (gameState == 'birdStart') {
     updateSidebar();
     currentBirdId = activeBirdIds[0];
-    playSong(birdData[currentBirdId].notes);
+    showBirdById(currentBirdId, {
+      callback: function(){ 
+        playSong(birdData[currentBirdId].notes);
+      }
+    });
     gameState = 'awaitingInput';
   }
 }
@@ -124,8 +128,8 @@ function onBirdButtonDown(birdButton) {
   }
 }
 
-
-function playSound(item) {
-	audio.play('note', 0, 2.5);
+function showBirdById(birdId, opts) {
+ if (opts.callback) {
+  opts.callback();
+ }
 }
-
