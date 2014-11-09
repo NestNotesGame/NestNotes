@@ -70,12 +70,14 @@ function preload () {
     var noteId = noteIds[i];
     game.load.audio(noteId, 'assets/' + noteId + '.mp3');
   }
+  game.load.audio("bgm", 'assets/' + 'bgm' + '.mp3');
   game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
 }
 
 function create () {
-
+	music = game.add.audio('bgm',1,true);
+    music.play();
   game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
   
@@ -124,7 +126,7 @@ function create () {
   graphics.endFill();
   // Smokey outline - outer
   graphics = game.add.graphics(smokeyPosition.x, smokeyPosition.y);
-  graphics.beginFill(0x0000CC);
+  graphics.beginFill(0xFFCA22);
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 69, 69);
   graphics.endFill();
@@ -136,7 +138,7 @@ function create () {
   graphics.endFill();
   // Smokey
   smokey = game.add.sprite(smokeyPosition.x+2, smokeyPosition.y, 'smokey');
-  
+  playSong("bgm");
   currentLevelIdx = 0;
   gameState = 'levelStart';
 }
