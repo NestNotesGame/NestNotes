@@ -37,10 +37,12 @@ window.onload = function() {
 	};	
 
 	app.queue = new createjs.LoadQueue(false);
-	app.queue.installPlugin(createjs.Sound);
+	//app.queue.installPlugin(createjs.Sound);
 	app.queue.on("complete", function(){
 		app.nestNotes.init(app.player);
 	});
+	//app.queue.loadFile({id: "playerL", src: "assets/playerL.png"});
+	app.queue.loadFile("assets/playerL.png");
 	app.queue.loadManifest([
 		{id: "playerL", src: "assets/playerL.png"},
 		{id: "playerR", src: "assets/playerR.png"},
@@ -69,7 +71,7 @@ window.onload = function() {
 		e.preventDefault();
 	});
 	
-	app.music = createjs.Sound.play("music",{loop:-1, volume: 0.7});
+	//app.music = createjs.Sound.play("music",{loop:-1, volume: 0.7});
 }
 // saves the current highscore to localStorage
 function saveHighscore() {

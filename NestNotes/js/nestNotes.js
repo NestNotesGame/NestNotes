@@ -1,4 +1,4 @@
-// Dependencies: 
+1// Dependencies: 
 // Description: singleton object
 // This object will be our main "controller" class and will contain references
 // to most of the other objects in the game.
@@ -33,7 +33,7 @@ app.nestNotes = {
 		// set up player player
 		this.player = player;
 		this.player.init();
-		var image1 = new Image(); image1.src = app.IMAGES["ellie"];
+		var image1 = new Image();
 		// createjs.Sound.play('good');
 		this.canvas.addEventListener("click", function(e){
 			app.nestNotes.mouseClick = true;
@@ -125,6 +125,7 @@ app.nestNotes = {
 			}*/
 		});
 		this.update();
+
 	},
 	pause: 0,
 	title: 0,
@@ -178,7 +179,7 @@ app.nestNotes = {
 			// draws background
 			app.drawLib.drawImg(this.ctx, 0, 0, this.WIDTH, this.HEIGHT, app.IMAGES["bg"]);
 			// draws all tiles
-			if(app.nestNotes.tiles){
+			if(app.nestNotes.tiles.length){
 				for (var i = 0; i < app.nestNotes.tiles.length && app.nestNotes.tiles; i++) { 
 					var tile = app.nestNotes.tiles[i];
 					tile.draw();
