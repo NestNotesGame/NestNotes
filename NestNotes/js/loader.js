@@ -22,9 +22,10 @@ window.onload = function() {
 	app.nestNotes.app = app;
 
 	app.IMAGES = {
-		treeBirdL: "assets/treeBirdL.png",
-		treeBirdR: "assets/treeBirdR.png",
-		treeBirdB: "assets/treeBirdB.png",
+		treeL: "assets/treeBirdL.png",
+		treeR: "assets/treeBirdR.png",
+		treeLS: "assets/treeBirdLSing.png",
+		treeRS: "assets/treeBirdRSing.png",
 		tree: "assets/tree.png",
 		playerL: "assets/playerL.png",
 		playerR: "assets/playerR.png",
@@ -37,12 +38,10 @@ window.onload = function() {
 	};	
 
 	app.queue = new createjs.LoadQueue(false);
-	//app.queue.installPlugin(createjs.Sound);
+	app.queue.installPlugin(createjs.Sound);
 	app.queue.on("complete", function(){
 		app.nestNotes.init(app.player);
 	});
-	//app.queue.loadFile({id: "playerL", src: "assets/playerL.png"});
-	app.queue.loadFile("assets/playerL.png");
 	app.queue.loadManifest([
 		{id: "playerL", src: "assets/playerL.png"},
 		{id: "playerR", src: "assets/playerR.png"},
@@ -50,13 +49,14 @@ window.onload = function() {
 		{id: "playerI1", src: "assets/playerI1.png"},
 		{id: "playerI2", src: "assets/playerI2.png"},
 		{id: "bg", src: "assets/bg.png"},
-		{id: "treeBirdL", src: "assets/treeBirdL.png"},
-		{id: "treeBirdR", src: "assets/treeBirdR.png"},
-		{id: "treeBirdB", src: "assets/treeBirdB.png"},
+		{id: "treeL", src: "assets/treeBirdL.png"},
+		{id: "treeR", src: "assets/treeBirdR.png"},
+		{id: "treeLS", src: "assets/treeBirdLSing.png"},
+		{id: "treeRS", src: "assets/treeBirdRSing.png"},
 		{id: "tree", src: "assets/tree.png"},
-		{id: "bgm", src: "assets/bgm.wav"},
 		{id: "halo", src: "assets/halo.png"},
-		{id: "smoky", src: "assets/smoky.png"}
+		{id: "smoky", src: "assets/smoky.png"},
+		{id: "bgm", src: "assets/bgm.mp3"}
 	]);	
 	
 	// setting up for keyboard input
@@ -71,7 +71,7 @@ window.onload = function() {
 		e.preventDefault();
 	});
 	
-	//app.music = createjs.Sound.play("music",{loop:-1, volume: 0.7});
+	// app.music = createjs.Sound.play("music",{loop:-1, volume: 0.7});
 }
 // saves the current highscore to localStorage
 function saveHighscore() {

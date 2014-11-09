@@ -1,4 +1,4 @@
-1// Dependencies: 
+// Dependencies: 
 // Description: singleton object
 // This object will be our main "controller" class and will contain references
 // to most of the other objects in the game.
@@ -33,7 +33,6 @@ app.nestNotes = {
 		// set up player player
 		this.player = player;
 		this.player.init();
-		var image1 = new Image();
 		// createjs.Sound.play('good');
 		this.canvas.addEventListener("click", function(e){
 			app.nestNotes.mouseClick = true;
@@ -125,17 +124,9 @@ app.nestNotes = {
 			}*/
 		});
 		this.update();
-
 	},
 	pause: 0,
 	title: 0,
-	instructions: 0,
-	setTitle: function(){
-		title = 1;
-		this.changing = true; 
-		setTimeout(function(){app.nestNotes.changing=false;},1000);
-	},
-	bg: undefined,
 	getLowerValue: function(a,b){
 		if (a>b) {
 			return b;
@@ -162,12 +153,16 @@ app.nestNotes = {
 	redefineSize: function(){
 		var _size = this.getUpperValue(1024,document.body.clientWidth/4);
 		if(document.body.clientWidth < 1024) { _size = document.body.clientWidth/2; }
-		this.canvas.width = (this.canvas.height = _size/2);
+		this.canvas.width = (this.canvas.height = _size/2) * 2;
 		this.WIDTH = this.canvas.width;
 		this.HEIGHT = this.canvas.height;
 		
 		app.drawLib.width = this.WIDTH;
 		app.drawLib.height = this.HEIGHT;
+	},
+	tree: { img: new Image(), state: "default", singing: false, x: 0, y:0, width: 0, height: 0, update: this.updateTree},
+	level: 0,
+	updateTree: function(){
 	},
 	update: function() { // updates the game
 		requestAnimationFrame(this.update.bind(this));
@@ -177,14 +172,40 @@ app.nestNotes = {
 		// if not in title mode, proceed with the game
 		if(this.title==0) {
 			// draws background
-			app.drawLib.drawImg(this.ctx, 0, 0, this.WIDTH, this.HEIGHT, app.IMAGES["bg"]);
+			var bgImg = new Image();
+			bgImg.src = app.IMAGES["bg"];
+			app.drawLib.rect(this.ctx, 0, 0, 1024, 512, "green");
+			app.drawLib.drawImg(this.ctx, 0, 0, 1024, 512, bgImg);
 			// draws all tiles
-			if(app.nestNotes.tiles.length){
+			if(app.nestNotes.tiles){
 				for (var i = 0; i < app.nestNotes.tiles.length && app.nestNotes.tiles; i++) { 
 					var tile = app.nestNotes.tiles[i];
 					tile.draw();
 				}
 			}
+			if(this.app.keydown[this.app.KEYBOARD.LEFT]){
+				this.player.state = "left";
+			}
+			else if(this.app.keydown[this.app.KEYBOARD.RIGHT]){
+				this.player.state = "right";
+			}
+			else if(this.app.keydown[this.app.KEYBOARD.UP]){
+				this.player.state = "mid";
+			}
+			else if(this.player.state != "idle1" || this.player.state != "idle2"){
+				this.player.state = "idle1";
+			}
+			
+			app.nestNotes.tree.x = 512;
+			app.nestNotes.tree.y = 512/4;
+			app.nestNotes.tree.w = 512*app.drawLib.width/1024;
+			app.nestNotes.tree.h = app.nestNotes.tree.w;
+			var hW = app.drawLib.width / 4;
+			var hH = app.drawLib.width / 4;
+			
+			this.tree.img.src = (app.nestNotes.tree.singing)? ((app.nestNotes.tree.state=="left")? app.IMAGES["treeLS"]: app.IMAGES["treeRS"]):(app.nestNotes.tree.state=="left")? app.IMAGES["treeLS"]: (this.tree.state=="right")? app.IMAGES["treeRS"] : app.IMAGES["tree"]; 
+			app.drawLib.drawImg(this.ctx, app.nestNotes.tree.x-hW, app.nestNotes.tree.y-hH, app.nestNotes.tree.w, app.nestNotes.tree.h, app.nestNotes.tree.img);
+			
 			// draws the player
 			this.player.draw(this.ctx);
 			
@@ -220,7 +241,7 @@ app.nestNotes = {
 				this.instructions = (this.instructions==1)? 0: 0;
 				this.changing = true; setTimeout(function(){app.nestNotes.changing=false;},100);
 			}
-			
+			/*
 			if(this.app.keydown[this.app.KEYBOARD.ENTER]&&!this.instructions>0 && !this.changing && this.app.keydown[this.app.KEYBOARD.ENTER]&& !this.app.lastkeydown[this.app.KEYBOARD.ENTER]) {
 				if(this.title == 1){ this.title = 0; }
 				if(this.title == 2){ this.instructions = 1; }
@@ -251,25 +272,7 @@ app.nestNotes = {
 			
 			green = (this.title==2)? 150: 50;
 			app.drawLib.drawText(this.ctx, 18, 'VT323', "INSTRUCTIONS?", 200, 160+2, "rgba(80,80,80,255)");
-			app.drawLib.drawText(this.ctx, 18, 'VT323', "INSTRUCTIONS?", 200, 160, "rgba(50,"+green+",50,10)");
-			
-			this.ctx.globalAlpha = 1.0;
-			if(!this.instructions && !this.changing && this.app.keydown[this.app.KEYBOARD.UP]&& !this.app.lastkeydown[this.app.KEYBOARD.UP]) {
-				this.title = (this.title==1)? 2: 1;
-				this.changing = true; setTimeout(function(){app.nestNotes.changing=false;},100);
-				createjs.Sound.play('menu');
-			}
-			
-			if(!this.instructions && !this.changing && this.app.keydown[this.app.KEYBOARD.DOWN]&& !this.app.lastkeydown[this.app.KEYBOARD.DOWN]) {
-				this.title = (this.title==1)? 2: 1;
-				this.changing = true; setTimeout(function(){app.nestNotes.changing=false;},100);
-				createjs.Sound.play('menu');
-			}
+			app.drawLib.drawText(this.ctx, 18, 'VT323', "INSTRUCTIONS?", 200, 160, "rgba(50,"+green+",50,10)");*/
 		}
 	}    
 }; // end app.nestNotes
-
-// generates a random integer, rounded down
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
