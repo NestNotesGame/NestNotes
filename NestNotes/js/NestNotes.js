@@ -1,5 +1,5 @@
 var gameState = null;
-var currentBirdId = 0;
+var currentBirdId;
 var gameSize = {w: 800, h: 600};
 var treeSize = {w: 300, h: 300};
 var treePos = {x: 200, y: 50};
@@ -76,8 +76,6 @@ function preload () {
 
 function create () {
 
-  activeBirdIds = ['unison'];
-
   game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
   
@@ -144,14 +142,20 @@ function create () {
 }
 
 function update (){
-  if (gameState == 'levelStart') {
+  if (gameState == 'win') {
+    updateSmokey({text: 'Congratulations!\nYou are now a master bird ranger!'});
+    game.paused = true;
+  }
+  else if (gameState == 'levelStart') {
     currentLevel = levels[currentLevelIdx];
     updateSidebar();
     updateSmokey({text: currentLevel.smokeyMessage});
     gameState = 'birdStart';
   }
   else if (gameState == 'birdStart') {
-    currentBirdId = currentLevel.activeBirdIds[0];
+    var activeBirdIds = currentLevel.activeBirdIds;
+    // Select random bird id from current active birds.
+    currentBirdId = activeBirdIds[Math.floor(Math.random() * activeBirdIds.length)];
     showBirdById(currentBirdId, {
       callback: function(){ 
         playSong(birdData[currentBirdId].notes);
@@ -200,6 +204,7 @@ var playSong = function(notes, opts) {
 
 
 var evaluateBirdButtonResponse = function(response) {
+  console.log("response: ", response, "cbid: ", currentBirdId);
   if (response.birdId == currentBirdId) {
     correctBirdCount++;
     updateSmokey({text: 'Correct!'});
@@ -231,6 +236,12 @@ function onBirdButtonDown(birdButton) {
       setTimeout(function() {
         if (correctBirdCount >= currentLevel.numTests) {
           currentLevelIdx += 1;
+
+          if (currentLevelIdx >= levels.length) {
+            gameState = 'win';
+            return;
+          }
+
           correctBirdCount = 0;
           gameState = 'levelStart';
         } else {
