@@ -167,12 +167,23 @@ function onBirdButtonDown(birdButton) {
     return;
   } else {
     evaluateBirdButtonResponse({birdId: birdButton.birdId});
-    gameState = 'birdStart';
+    hideBird({callback: function(){
+      setTimeout(function() {
+        gameState = 'birdStart';
+      }, 1000);
+    }});
   }
 }
 
 function showBirdById(birdId, opts) {
-  var tween = game.add.tween(birdSprite).to({ alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true).start();
+  var tween = game.add.tween(birdSprite).to({ alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+  if (opts.callback) {
+    tween.onComplete.add(opts.callback, this);
+  }
+}
+
+function hideBird(opts) {
+  var tween = game.add.tween(birdSprite).to({ alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
   if (opts.callback) {
     tween.onComplete.add(opts.callback, this);
   }
