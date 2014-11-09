@@ -24,7 +24,7 @@ var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
 
 var birdData = {
   'unison': {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
-  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Peruvian\n Tang Licker'},
+  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Peruvian\n Squash Pecker'},
 }
 
 var levels = [
@@ -40,7 +40,7 @@ var levels = [
     id: 0,
     numTests: 5,
     smokeyMessage: "Now get ready for a challenge.\n" +
-      "A flock of Peruvian Tang Lickers has been spotted nearby.\n" + 
+      "A flock of Peruvian Squash Peckers has been spotted nearby.\n" + 
       "They sing in major seconds.",
     activeBirdIds: ['unison', 'M2']
   }
@@ -174,15 +174,18 @@ var updateSmokey = function(opts) {
 };
 
 var updateSidebar = function() {
-  console.log(sidebarItems);
   for (var i=0; i < sidebarItems.length; i++) {
     sidebarItems[i].button.destroy();
     sidebarItems[i].text.destroy();
   }
   sidebarItems = [];
+  var previousY = 0;
   for (var i=0; i < currentLevel.activeBirdIds.length; i++) {
+    var currentY = previousY + defaultTextPadding;
     var birdId = currentLevel.activeBirdIds[i];
-    sidebarItems.push(makeSidebarItems({y: 15, birdId: birdId}));
+    var sidebarItem = makeSidebarItems({y: currentY, birdId: birdId});
+    sidebarItems.push(sidebarItem);
+    previousY = currentY + sidebarItem.text.height;
   }
 }
 
@@ -201,7 +204,6 @@ var evaluateBirdButtonResponse = function(response) {
     correctBirdCount++;
     updateSmokey({text: 'Correct!'});
   } else {
-    console.log('incorrect');
     updateSmokey({text: 'Nope! Try again rookie...'});
   }
 }
