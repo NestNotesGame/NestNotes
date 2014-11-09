@@ -32,19 +32,18 @@ var audio = {};
 var activeBirds = [];
 
 function preload () {
-  game.load.image('bg', 'assets/bg.png');
   game.load.image('tree', 'assets/tree_450x450.png');
   game.load.image('bird1', 'assets/bird1_160x160.png');
   game.load.image('bird2', 'assets/bird2_160x160.png');
-
-  game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
-  game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
 
   // Load notes.
   for (var i=0; i < noteIds.length; i++) {
     var noteId = noteIds[i];
     game.load.audio(noteId, 'assets/' + noteId + '.mp3');
   }
+  game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
+  game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
+
 
 }
 
@@ -68,8 +67,6 @@ function create () {
   tree.scale.setTo(.67, .67);
   
   var bird = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
-  bird.cropRect = new Phaser.Rectangle(0,0,160,110);
-  bird.updateCrop();
   bird.scale.setTo(.67, .67);
 
   // Draw right sidebar.
@@ -170,7 +167,7 @@ function onBirdButtonDown(birdButton) {
 }
 
 function showBirdById(birdId, opts) {
- if (opts.callback) {
-  opts.callback();
- }
+  if (opts.callback) {
+    opts.callback();
+  }
 }
