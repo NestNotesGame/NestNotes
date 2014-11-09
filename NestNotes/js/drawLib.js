@@ -18,7 +18,7 @@ app.drawLib = {
 	// draws images
 	drawImg: function(ctx,x,y,w,h,img){
 		ctx.save();
-		try{ctx.drawImage(img,x*this.width/1024,y*this.height/512,w*this.width/1024,h*this.height/512);}catch(e){};
+		ctx.drawImage(img,x*this.width/1024,y*this.height/512,w*this.width/1024,h*this.height/512);;
 		ctx.restore();
 	},
 	drawText: function(ctx, size, font, string, x, y, color){

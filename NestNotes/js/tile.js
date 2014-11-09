@@ -1,7 +1,7 @@
 "use strict";
 var app = app||{};
-app.BirdBox = function(){
-	function BirdBox(x,y,state){
+app.Box = function(){
+	function Box(x,y,state){
 		this.x = x;
 		this.y = y;
 		this.is_available = false;
@@ -13,12 +13,12 @@ app.BirdBox = function(){
 		};
 	};
 	
-	var p = BirdBox.prototype;
+	var p = Box.prototype;
 	p.draw = function(){
 		if(!is_available){return;}
 		var img = this.img
 		app.drawLib.drawImg(app.nestNotes.ctx, this.x*32,this.y*32,32,32,halo);
 	};
 	
-	return BirdBox;
+	return Box;
 }();

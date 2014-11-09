@@ -14,28 +14,29 @@ app.player = {
 	init: function(){
 		this.l = new Image(); 
 		this.l.src = app.IMAGES['playerL'];
-		this.l.src = app.IMAGES['playerL'];
-		this.m = new Image(); 
-		this.m.src = app.IMAGES['playerM'];
+		this.m = new Image();  
 		this.m.src = app.IMAGES['playerM'];
 		this.r = new Image(); 
 		this.r.src = app.IMAGES['playerR'];
-		this.r.src = app.IMAGES['playerR'];
 		this.i1 = new Image(); 
 		this.i1.src = app.IMAGES['playerI1'];
-		this.i1.src = app.IMAGES['playerI1'];
 		this.i2 = new Image(); 
-		this.i2.src = app.IMAGES['playerI2'];
 		this.i2.src = app.IMAGES['playerI2'];
 	},
 	x: 0,
 	y: 0,
-	width: 32,
-	height: 32,
+	width: 128,
+	height: 128,
+	
 	state: undefined,
 	image: undefined,
 	alive: true,
 	life: 3,
+	i1: undefined,
+	i2: undefined,
+	m : undefined,
+	l : undefined,
+	r : undefined,
 	reset: function(){ // resets stats for a new game
 		//
 	},
@@ -46,10 +47,13 @@ app.player = {
 	//	//if(this.life<=0){this.alive = false; setTimeout(function(){/*alert("You are dead!");*/this.alive = false; /*<---how the player dies*/}, 200);}
 	//},
 	draw: function(ctx) { // draws the player using the drawLib
-		this.x = app.drawLib.WIDTH/2;
-		this.y = app.drawLib.HEIGHT/3 * 2
-		var hW = this.width/2;
-		var hH = this.height/2;
+		app.player.x = 1024/2;
+		app.player.y = 512/3 * 2;
+		this.width = this.drawLib.width / 1024 * 256;
+		this.height = this.drawLib.height / 512 * 256;
+		var hW = this.drawLib.width / 1024 * 256/2;
+		var hH = this.drawLib.height / 512 * 256/2;
+		
 		this.image = (this.state=="left")? this.l:(this.state=="right")? this.r:(this.state=="mid")? this.m:(this.state=="idle1")? this.i1:this.i2;
 		if(this.state == "idle1" || this.state == "idle2"){
 			this.state = (this.state=="idle1")? "idle2": "idle1";
@@ -58,7 +62,7 @@ app.player = {
 			this.drawLib.rect(ctx,this.x-hW,this.y-hH,this.width,this.height,this.color);
 		}
 		else if(this.image) {
-			this.drawLib.drawImg(ctx,this.x,this.y,this.width,this.height,this.image);
+			this.drawLib.drawImg(ctx,this.x-hW,this.y-hH,this.width,this.height,this.image);
 		}
 	}
 }; // end app.player
