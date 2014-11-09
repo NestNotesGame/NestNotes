@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="image_src" type="image/png" href="blue.png" />
+	<link href='styles/css.css' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+	<link href="http://fonts.googleapis.com/css?family=Merienda" rel="stylesheet" type="text/css" >
+	<title>Nest Notes! web game by argzero, dtendr, skweezebox, iambehindu</title>
+</head>
+<body>
+	<header id="header" style="width: 100%; position: fixed; background-color: #000000; height: 70px; margin-top:00px; margin-bottom:00px;">
+		<section class="boxed" style="float: left;"> 
+			<a href="http://www.argzero.org">
+				<img src="blue.png" alt="Argzero Symbol" class="boxImg">
+			</a>
+		</section>
+		<section class="boxed" style="float: right;"> 
+			<a href="#topSection">
+				<p class="font" style="display: block; margin-right: 50px; font-family: 'Press Start 2P', cursive; font-size: 24px; margin-bottom: 20px;">TOP</p> 
+			</a>
+		</section>
+	</header>
+	<section id="topSection" class="shadow">
+		<h1 class="text-shadow" style="text-align:center; color: rgba(0,255,0,150); font-family: 'Merienda', cursive; font-size: 48px; margin-bottom: 10px; margin-top:20px;">Nest Notes!</h1>
+		<h2 style="text-align:center; color: rgba(0,100,100,50); font-family: 'Press Start 2P', cursive; font-size: 18px; margin-top: 10px;">web game by &lt;<a href="https://github.com/argzero"><span>argzero</span></a>, <a href="https://github.com/dtendr"><span>dtendr</span></a>, <a href="https://github.com/ADORSK"><span>skweezebox</span></a>&gt;</h2>
+	</section>
+	<section id="contentBox">
+		<canvas width='1024' height='512' class="shadow">
+			ONLY YOU CAN PREVENT OUTDATED BROWSERS. SUPPORT THE W3C MOVEMENT TODAY :P.
+			<img src="http://img4.wikia.nocookie.net/__cb20130830234428/disney/images/c/cd/Ad-icon-battle-Smokey-Bear-vs-perky-Flo-GQCBUS1-x-large.jpg" alt="Symbol" style="display: block; margin-left: auto; margin-right: auto; width:150px; height:150px;">
+		</canvas>
+	</section>
+	<!--
+		<div class="ddocsection" style="width:100%; min-height:200px; padding-bottom:20px; font-family: 'Press Start 2P', cursive; background-color: #004444;">
+			<h3 class="ddocheading" style="width: 100%; margin-top:0px; margin-bottom:5px; height: 40px; font-size: 24px; background-color: #002004; color: #fff; vertical-align: middle; padding-top:10px;">Concept and Abstract</h3>
+			<div style="width:75%; margin: 0 auto; margin-top: 0px; padding: 0px;"> <p class="ddoctext" style="line-height: 2.0; margin-top: 0px; font-size: 18px; color:#089; width: 100%; margin-left:auto;">Ellie the elephant's natural home has been overtaken by the metal-builders of humanity, but Ellie wants his home back. Play as Ellie as he smashes through iron plating to let the grass grow again where it once was, but be careful not to stomp out the very grass you sought to save. If Ellie's home takes on too much damage Ellie will despair and his home will be ruined, so be careful where you step!</p></div>
+		</div>
+		// Gamestates
+		<div class="ddocsection" style="width:100%; min-height:200px; padding-bottom:20px; font-family: 'Press Start 2P', cursive; background-color: #004444;">
+			<h3 class="ddocheading" style="width: 100%; margin-top:0px; margin-bottom:5px; height: 40px; font-size: 24px; background-color: #002004; color: #fff; vertical-align: middle; padding-top:10px;">Gamestate Pictures</h3>
+			<div style="width:100%; text-align:center; margin: 0 auto; margin-top: 0px; padding: 0px;"> <img src="title.jpg"><img src="in-game.jpg"><img src="pause.jpg"><img src="lose.jpg"></div>
+		</div>
+	-->
+	<div class="ddocsection">
+		<h3 class="ddocheading" style="width: 100%; margin-top:0px; margin-bottom:5px; height: 40px; font-size: 24px; background-color: #002004; color: #fff; vertical-align: middle; padding-top:10px;">Control Scheme</h3>
+		<div class="ddoctext">Up, Down, Left, and Right arrow keys -> Menu navigation and movement in-game<br>Press Enter to Select a menu option and to move through otherwise unlabeled screens and to select a bird if on desktop. You may also click or tap the bird on the tree to do the same.</p></div>
+	</div>
+	<div class="ddocsection">
+		<h3 class="ddocheading">Credit to the following:</h3>
+		<div class="ddoctext">
+			<p class="ddoctext2" style="padding-top:0px;"><a href="https://github.com/argzero"><span>argzero</span></a> - music / code / lead design<br><a href="https://github.com/dtendr"><span>dtendr</span></a> - art assistance<br><a href="https://github.com/ADORSK"><span>skweezebox</span></a> - art direction and design and initial idea / design<br><a href="https://github.com/iambehindu"><span>iambehindu</span></a> sound effects<br><br>All rights reserved<br><br>To Audiosauna.com - for providing me a means by which to create my music</p>
+		</div>
+	</div>
+	<script src="http://code.createjs.com/preloadjs-0.4.1.min.js"></script>
+	<script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>
+	
+	<script src="js/nestNotes.js"></script>
+	<script src="js/HUD.js"></script>
+	<script src="js/tile.js"></script>
+	<script src="js/loader.js"></script>
+	<script src="js/player.js"></script>
+	<script src="js/drawLib.js"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+Randomly generated level of 8*8
+Increase in number of enemies by level, bouncing lasers that give just enough time to pass by and claim a tile.

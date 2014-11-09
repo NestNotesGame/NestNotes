@@ -1,0 +1,109 @@
+body { 
+	margin: 0; 
+	padding: 0; 
+	background: #999;
+}
+
+#topSection{
+	padding: 10px; 
+	padding-top: 70px; 
+	background-color: #003500;
+}
+
+canvas { 
+	display: block; 
+	margin: 0.5em auto; 
+	padding-top:10px; 
+	margin-bottom: 0px; 
+	background-color: #004532; 
+}
+
+.shadow {
+	margin-top: 0px;
+	padding: 5px; 
+	background-color: #001131;
+}
+
+.text-shadow {	
+	text-shadow: 1px 5px 5px rgba(155,155,25,200); 
+}
+
+.boxed { 
+	color:#fff; 
+}
+
+.boxImg{
+	width:70px; 
+	height:70px; 
+	top:0px; 
+	border: none; 
+	padding: 0px; 
+	background-color: rgba(100,0,0,0.1);
+}
+
+#contentBox{
+	background-color: #00101A;
+}
+
+.ddocsection {
+	width: 100%;
+	color: #fff;
+	width:100%; 
+	min-height:200px; 
+	padding-bottom:20px; 
+	font-family: 'Press Start 2P', cursive; 
+	background-color: #004444;
+}
+
+.ddocheading { 
+	text-align:center; 
+	background-color: #002004; 
+	color: #fff;
+	width: 100%;
+	margin-top:0px; 
+	margin-bottom:5px; 
+	height: 40px; 
+	font-size: 24px; 
+	background-color: #002004; 
+	color: #fff; 
+	vertical-align: middle; 
+	padding-top:10px;
+}
+
+.ddoctext, .ddoctext2 { 
+	padding: 50px;
+	line-height: 2.0; 
+	width:75%; 
+	color:#089;
+}
+
+.ddoctext {
+	margin: 0 auto; 
+	margin-top: 0px; 
+	padding: 0px;
+}
+
+.ddoctext2{
+	margin-top: 0px; 
+	font-size: 18px; 
+	width: 100%; 
+	margin-left:auto;
+}
+
+h3 { 
+	display: inline-block; 
+	text-align: center; 
+}
+
+a { 
+	color: #007545; 
+}
+
+#header{
+	width: 100%; 
+	position: fixed; 
+	background-color: #000000; 
+	height: 70px; 
+	margin-top:00px; 
+	margin-bottom:00px;
+}
