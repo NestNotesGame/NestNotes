@@ -17,14 +17,17 @@ var songWaitDelay = 1.5;
 
 var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
 
-var birdData = [
-  {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
-  {id: 'M2', notes: ['C', 'D'], label: 'Purple-footed\n Tang drinker'},
-]
+var birdData = {
+  'unison': {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
+  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Purple-footed\n Tang drinker'},
+}
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'contentBox', { preload: preload, create: create, update: update});
 
-var birdButtons = [];
+var sidebarItems = [];
+var audio = {};
+
+var activeBirds = [];
 
 function preload () {
   game.load.image('tree', 'assets/tree_450x450.png');
@@ -44,15 +47,13 @@ function preload () {
 
 function create () {
 
-  var activeBirdIds = ['unison'];
+  activeBirdIds = ['unison'];
 
   var tree = game.add.sprite(treePos.x, treePos.y, 'tree');
   tree.scale.setTo(.67, .67);
   
   var bird = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
   bird.scale.setTo(.67, .67);
-
-  audio = game.add.audio('sfx');
 
   // Draw right sidebar.
   var graphics = game.add.graphics(0, 0);
@@ -67,32 +68,40 @@ function create () {
 function update (){
   if (gameState == 'birdStart') {
     updateSidebar();
-    console.log('show bird');
-    console.log('play bird song');
-    currentBirdId = 0;
+    currentBirdId = activeBirdIds[0];
+    playSong(birdData[currentBirdId].notes);
     gameState = 'awaitingInput';
   }
 }
 
 var updateSidebar = function() {
-  for (var i=0; i < birdButtons.length; i++) {
-    birdButtons[i].destroy();
+  for (var i=0; i < sidebarItems.length; i++) {
+    sidebarItems[i].button.destroy();
+    sidebarItems[i].text.destroy();
   }
-  birdButtons = [];
-  birdButtons.push(makeBirdButton(
+  sidebarItems = [];
+  sidebarItems.push(makeSidebarItems(
     {y: 15, birdId: 0, text: 'Ruby-Throated\nSap-Sucker\n(Interval: Unison)'}));
 }
+
+var playSong = function(notes, opts) {
+  game.add.audio(notes[0]).play();
+  if (notes.length > 1) {
+    setTimeout(function(){
+      playSong(notes.slice(1), opts);
+    }, 2000);
+  }
+};
 
 
 var evaluateBirdButtonResponse = function(response) {
   if (response.birdId == currentBirdId) {
-    console.log('correct');
   } else {
     console.log('incorrect');
   }
 }
 
-function makeBirdButton(opts) {
+function makeSidebarItems(opts) {
   var x = gameSize.w - rightSidebarSize.w + defaultTextPadding;
   var button = game.add.button(x, opts.y, 'button', onBirdButtonDown, this, 0, 1, 2);
   button.birdId = opts.birdId;
@@ -101,10 +110,11 @@ function makeBirdButton(opts) {
   var buttonText = game.add.bitmapText(x, opts.y + 7, 'nokia', opts.text, 16);
   buttonText.x = x + button.width + defaultTextPadding;
 
+  return {button: button, text: buttonText};
+
 }
 
 function onBirdButtonDown(birdButton) {
-  console.log('obbd');
   birdButton.events.onInputDown.add(onBirdButtonDown, this);
   if (gameState != 'awaitingInput') {
     return;
