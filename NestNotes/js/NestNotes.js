@@ -4,6 +4,10 @@ var gameSize = {w: 800, h: 600};
 var treeSize = {w: 300, h: 300};
 var treePos = {x: 200, y: 50};
 
+var rightSidebarSize = {w: 250, h: gameSize.h};
+
+var defaultTextPadding = 10;
+
 var birdSize = {w: 103, h: 103};
 var birdY = treePos.y + treeSize.h * .25;
 var birdLeftPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
@@ -18,7 +22,7 @@ function preload () {
   game.load.image('bird1', 'assets/bird1_160x160.png');
   game.load.image('bird2', 'assets/bird2_160x160.png');
 
-  game.load.bitmapFont('nokia', 'assets/fonts/bitmapFonts/nokia16black.png', 'assets/fonts/bitmapFonts/nokia16black.xml');
+  game.load.bitmapFont('nokia', 'assets/bitmapFonts/nokia16black.png', 'assets/bitmapFonts/nokia16black.xml');
   game.load.spritesheet('button', 'assets/buttons/flixel-button.png', 80, 20);
 
   game.load.audio('sfx', 'assets/A.mp3');
@@ -34,14 +38,14 @@ function create () {
 
   audio = game.add.audio('sfx');
 
-  // Draw sidebar.
+  // Draw right sidebar.
   var graphics = game.add.graphics(0, 0);
   graphics.beginFill(0xFFFFFF);
   graphics.lineStyle(1, 0xffffff, 0);
-  graphics.drawRect(600, 0, 200, 600);
+  graphics.drawRect(gameSize.w - rightSidebarSize.w, 0, rightSidebarSize.w, rightSidebarSize.h);
 
   // Draw initial sidebar buttons.
-  makeBirdButton({x: 600, y: 15, birdId: 0, text: 'Ruby-Throated Sap-Sucker'});
+  makeBirdButton({y: 15, birdId: 0, text: 'Ruby-Throated\nSap-Sucker\n(Interval: Unison)'});
 
   gameState = 'birdStart';
 }
@@ -65,13 +69,13 @@ var evaluateBirdButtonResponse = function(response) {
 }
 
 function makeBirdButton(opts) {
-  var button = game.add.button(opts.x, opts.y, 'button', onBirdButtonDown, this, 0, 1, 2);
+  var x = gameSize.w - rightSidebarSize.w + defaultTextPadding;
+  var button = game.add.button(x, opts.y, 'button', onBirdButtonDown, this, 0, 1, 2);
   button.birdId = opts.birdId;
-  button.scale.set(2, 1.5);
-  button.smoothed = false;
+  button.scale.set(.5, 2);
 
-  var buttonText = game.add.bitmapText(opts.x, opts.y + 7, 'nokia', opts.text, 16);
-  buttonText.x += (button.width / 2) - (buttonText.textWidth / 2);
+  var buttonText = game.add.bitmapText(x, opts.y + 7, 'nokia', opts.text, 16);
+  buttonText.x = x + button.width + defaultTextPadding;
 
 }
 
