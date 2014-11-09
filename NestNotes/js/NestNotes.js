@@ -11,7 +11,7 @@ var smokeyPosition = {x: 0, y: 0};
 var smokeyVisible = false;
 var birdSize = {w: 103, h: 103};
 var birdY = treePos.y + treeSize.h * .25;
-var birdLeftPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
+var birdLeftPos = {x: treePos.x + (.50 * treeSize.w) - (.5*birdSize.w), y: birdY - 25};
 var birdRightPos = {x: treePos.x + (.25 * treeSize.w) - (.5*birdSize.w), y: birdY};
 
 var smokey;
@@ -43,9 +43,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'contentBox', { preload: prelo
 
 var sidebarItems = [];
 var audio = {};
+var cropRect;
 
 var activeBirds = [];
 var birdSprite;
+var birdHover = false;
 
 function preload () {
   game.load.image('tree', 'assets/tree_450x450.png');
@@ -54,7 +56,7 @@ function preload () {
   game.load.image('bg', 'assets/bg.png');
   game.load.image('smokey', 'assets/smokey_64x64.png');
 
-  // Load notes.
+  // Load notes
   for (var i=0; i < noteIds.length; i++) {
     var noteId = noteIds[i];
     game.load.audio(noteId, 'assets/' + noteId + '.mp3');
@@ -83,7 +85,8 @@ function create () {
   tree.scale.setTo(.67, .67);
   
   birdSprite = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
-  birdSprite.cropRect = new Phaser.Rectangle(0,0,160,110);
+  cropRect = new Phaser.Rectangle(0,0,160,110);
+  birdSprite.cropRect = cropRect;
   birdSprite.updateCrop();
   birdSprite.scale.setTo(.67, .67);
 
@@ -118,6 +121,12 @@ function create () {
   graphics.lineStyle(1, 0xffffff, 0);
   graphics.drawRect(0, 0, 69, 69);
   graphics.endFill();
+  // Smokey outline - outer
+  graphics = game.add.graphics(smokeyPosition.x+5, smokeyPosition.y+5);
+  graphics.beginFill(0x653512);
+  graphics.lineStyle(1, 0xffffff, 0);
+  graphics.drawRect(0, 0, 59, 59);
+  graphics.endFill();
   // Smokey
   smokey = game.add.sprite(smokeyPosition.x+2, smokeyPosition.y, 'smokey');
   
@@ -140,6 +149,7 @@ function update (){
         playSong(birdData[currentBirdId].notes);
       }
     });
+	birdSprite.crop(cropRect);
     gameState = 'awaitingInput';
   }
 }
@@ -218,9 +228,20 @@ function showBirdById(birdId, opts) {
   }
 }
 
+function iterateUntilCropHeight(h){
+  birdSprite.cropRect = cropRect;
+  birdSprite.updateCrop();
+  if(cropRect.height != h)
+	iterateUntilCropHeight(h);
+}
+
 function hideBird(opts) {
   var tween = game.add.tween(birdSprite).to({ alpha: 0}, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
   if (opts.callback) {
     tween.onComplete.add(opts.callback, this);
   }
+}
+
+function hoverOverBird(){
+	birdHover = true;
 }
