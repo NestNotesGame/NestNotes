@@ -21,8 +21,21 @@ var noteIds = ['C', 'D', 'E', 'F', 'G', 'A'];
 
 var birdData = {
   'unison': {id: 'unison', notes: ['C', 'C'], label: 'Ruby-throated\ngarlic sucker'},
-  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Purple-footed\n Tang drinker'},
+  'M2': {id: 'M2', notes: ['C', 'D'], label: 'Peruvian\n Tang drinker'},
 }
+
+var levels = [
+  {
+    id: 0,
+    numTests: 1,
+    smokyMessage: "Welcome aboard, rookie.\nGet ready for your first assignment." +
+      "Your first assignment is to identify the Ruby-Throated Biscuit Finch.\n" + 
+      "It sings a unison interval.",
+    activeBirdIds: ['unison']
+  }
+];
+var currentLevelIdx;
+var currentLevel;
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'contentBox', { preload: preload, create: create, update: update});
 
@@ -105,16 +118,22 @@ function create () {
   graphics.drawRect(0, 0, 69, 69);
   graphics.endFill();
   
-  gameState = 'birdStart';
+  currentLevelIdx = 0;
+  gameState = 'levelStart';
 }
 
 function update (){
-  if (gameState == 'birdStart') {
+  if (gameState == 'levelStart') {
+    currentLevel = levels[currentLevelIdx];
     updateSidebar();
-    currentBirdId = activeBirdIds[0];
+    updateSmokey();
+    gameState = 'birdStart';
+  }
+  else if (gameState == 'birdStart') {
+  console.log("cl: ", currentLevel);
+    currentBirdId = currentLevel.activeBirdIds[0];
     showBirdById(currentBirdId, {
       callback: function(){ 
-        console.log('yo');
         playSong(birdData[currentBirdId].notes);
       }
     });
@@ -122,14 +141,19 @@ function update (){
   }
 }
 
+var updateSmokey = function() {
+};
+
 var updateSidebar = function() {
   for (var i=0; i < sidebarItems.length; i++) {
     sidebarItems[i].button.destroy();
     sidebarItems[i].text.destroy();
   }
   sidebarItems = [];
-  sidebarItems.push(makeSidebarItems(
-    {y: 15, birdId: 0, text: 'Ruby-Throated\nSap-Sucker\n(Interval: Unison)'}));
+  for (var i=0; i < currentLevel.activeBirdIds.length; i++) {
+    var birdId = currentLevel.activeBirdIds[i];
+    sidebarItems.push(makeSidebarItems({y: 15, birdId: birdId}));
+  }
 }
 
 var playSong = function(notes, opts) {
@@ -154,8 +178,9 @@ function makeSidebarItems(opts) {
   var button = game.add.button(x, opts.y, 'button', onBirdButtonDown, this, 0, 1, 2);
   button.birdId = opts.birdId;
   button.scale.set(.5, 2);
+  var birdText = birdData[opts.birdId].label;
 
-  var buttonText = game.add.bitmapText(x, opts.y + 7, 'nokia', opts.text, 16);
+  var buttonText = game.add.bitmapText(x, opts.y + 7, 'nokia', birdText, 16);
   buttonText.x = x + button.width + defaultTextPadding;
 
   return {button: button, text: buttonText};
