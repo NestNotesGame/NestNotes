@@ -164,6 +164,7 @@ var updateSmokey = function(opts) {
 };
 
 var updateSidebar = function() {
+  console.log(sidebarItems);
   for (var i=0; i < sidebarItems.length; i++) {
     sidebarItems[i].button.destroy();
     sidebarItems[i].text.destroy();
@@ -199,7 +200,7 @@ function makeSidebarItems(opts) {
   var x = gameSize.w - rightSidebarSize.w + defaultTextPadding;
   var button = game.add.button(x, opts.y, 'button', onBirdButtonDown, this, 0, 1, 2);
   button.birdId = opts.birdId;
-  button.scale.set(.5, 2);
+  button.scale.set(1, 2);
   var birdText = birdData[opts.birdId].label;
 
   var buttonText = game.add.bitmapText(x, opts.y + 7, 'nokia', birdText, 16);
