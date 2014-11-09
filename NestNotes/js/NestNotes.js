@@ -69,6 +69,8 @@ function create () {
   tree.scale.setTo(.67, .67);
   
   birdSprite = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
+  birdSprite.cropRect = new Phaser.Rectangle(0,0,160,110);
+  birdSprite.updateCrop();
   birdSprite.scale.setTo(.67, .67);
 
   // Draw right sidebar.
@@ -78,11 +80,10 @@ function create () {
   graphics.drawRect(gameSize.w - rightSidebarSize.w, 0, rightSidebarSize.w, rightSidebarSize.h);
   
   // Underline current bird
-  bird = birdLeftPos;
   graphics = game.add.graphics(0, 0);
   graphics.beginFill(0x009626);
   graphics.lineStyle(1, 0x006626, 0);
-  graphics.drawRect(bird.x+9, bird.y+bird.height, bird.width-27, 9);
+  graphics.drawRect(birdSprite.x+9, birdSprite.y+birdSprite.height, birdSprite.width-27, 9);
   graphics.endFill();
   
   // Outer Smokey box
