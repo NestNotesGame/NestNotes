@@ -30,11 +30,13 @@ var sidebarItems = [];
 var audio = {};
 
 var activeBirds = [];
+var birdSprite;
 
 function preload () {
   game.load.image('tree', 'assets/tree_450x450.png');
   game.load.image('bird1', 'assets/bird1_160x160.png');
   game.load.image('bird2', 'assets/bird2_160x160.png');
+  game.load.image('bg', 'assets/bg.png');
 
   // Load notes.
   for (var i=0; i < noteIds.length; i++) {
@@ -66,8 +68,8 @@ function create () {
   var tree = game.add.sprite(treePos.x, treePos.y, 'tree');
   tree.scale.setTo(.67, .67);
   
-  var bird = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
-  bird.scale.setTo(.67, .67);
+  birdSprite = game.add.sprite(birdLeftPos.x, birdLeftPos.y, 'bird1');
+  birdSprite.scale.setTo(.67, .67);
 
   // Draw right sidebar.
   graphics = game.add.graphics(0, 0);
@@ -76,6 +78,7 @@ function create () {
   graphics.drawRect(gameSize.w - rightSidebarSize.w, 0, rightSidebarSize.w, rightSidebarSize.h);
   
   // Underline current bird
+  bird = birdLeftPos;
   graphics = game.add.graphics(0, 0);
   graphics.beginFill(0x009626);
   graphics.lineStyle(1, 0x006626, 0);
@@ -110,6 +113,7 @@ function update (){
     currentBirdId = activeBirdIds[0];
     showBirdById(currentBirdId, {
       callback: function(){ 
+        console.log('yo');
         playSong(birdData[currentBirdId].notes);
       }
     });
@@ -167,7 +171,8 @@ function onBirdButtonDown(birdButton) {
 }
 
 function showBirdById(birdId, opts) {
+  var tween = game.add.tween(birdSprite).to({ alpha: 1}, 1000, Phaser.Easing.Linear.None, true, 0, 1000, true).start();
   if (opts.callback) {
-    opts.callback();
+    tween.onComplete.add(opts.callback, this);
   }
 }
